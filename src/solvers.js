@@ -12,6 +12,11 @@
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
+window.matrixPosition = {};
+
+//consider refactoring to a board object as a parameter 
+
+
 
 window.findNRooksSolution = function(n, row, col) {
   //create a new Board(n) first????
@@ -31,19 +36,31 @@ window.findNRooksSolution = function(n, row, col) {
         count++;
       }
       if (count === 0) {
+        if (startCol < n - 1) {
+          startCol++;
+        } else if (startRow < n - 1 && startCol >= n - 1) {
+          startCol = 0;
+          startRow++;
+        } 
+        matrixPosition['row'] = startRow;
+        matrixPosition['col'] = startCol;
         return board.rows();
       }
     }  
   }
  
-  if (row < n - 1) {
-    row++;
-  } else if (row > n - 1 && col < n - 1) {
-    col++;
-    row = 0;
+  //increment the row and column values before recursion
+  if (startCol < n - 1) {
+    startCol++;
+  } else if (startRow < n - 1 && startCol >= n - 1) {
+    startCol = 0;
+    startRow++;
   }
+  
+  matrixPosition['row'] = startRow;
+  matrixPosition['col'] = startCol;
 
-  solution = findNRooksSolution(n, row, col);
+  solution = findNRooksSolution(n, startRow, startCol);
   solution = solution ? solution.rows() : solution;
   
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
@@ -51,10 +68,31 @@ window.findNRooksSolution = function(n, row, col) {
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
+
+// considering refactoring to create new board in this function
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutions = [];
+  window.matrixPosition = {row: 0, col: 0};
+
+
+  // WORK HERE
+
+  // var temp = findNRooksSolution(n, window.matrixPosition['row'], window.matrixPosition['col']);
+  // var temp = findNRooksSolution(n, window.matrixPosition['row'], window.matrixPosition['col']);
+  // var temp = findNRooksSolution(n, window.matrixPosition['row'], window.matrixPosition['col']);
+  // var temp = findNRooksSolution(n, window.matrixPosition['row'], window.matrixPosition['col']);
+  
+  
+  // while (window.matrixPosition['row'] < n && window.matrixPosition['col'] < n) {
+  //   var temp = findNRooksSolution(n, window.matrixPosition['row'], window.matrixPosition['col']);
+  //   if (temp !== undefined) {
+  //     solutions.push(temp);  
+  //   }
+  // }
+  var solutionCount = solutions.length; 
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  
   return solutionCount;
 };
 
